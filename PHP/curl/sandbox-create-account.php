@@ -22,8 +22,35 @@ $response = curl_exec($ch);
 $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 curl_close($ch);
 
-print_r($response);
-
-if($httpCode >= 200 && $httpCode < 300) {
-
+if(!($httpCode >= 200 && $httpCode < 300)) {
+	// Exception
+	http_response_code(500);
+	echo $response;
+	exit;
 }
+	
+try {
+	
+	$jsonResponse = json_decode($response, false, 512, JSON_THROW_ON_ERROR);
+	
+} catch (JsonException $e) {
+	
+	http_response_code(500);
+	echo $response;
+	exit;
+	
+}
+	
+// TODO: save the bearer_token
+	
+var_dump($jsonResponse);
+
+/* EXPECT:
+
+object(stdClass)#1 (2) {
+	["id"]=> int(0)
+	["bearer_token"]=>
+	string(42) "0|fhdwUpwW56BEqDVFV9LQKARhVvSrJobQCNzWBpZb"
+}
+
+*/
