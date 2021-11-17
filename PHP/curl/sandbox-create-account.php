@@ -9,11 +9,12 @@ $PASSWORD = "password";
 $ch = curl_init();
 curl_setopt($ch, CURLOPT_URL, $url);
 curl_setopt($ch, CURLOPT_HTTPHEADER, [
-	'Content-Type: application/json'
+	'Accept: application/json',
+	'Content-Type: application/x-www-form-urlencoded;charset=UTF-8'
 ]);
 curl_setopt($ch, CURLOPT_POST, true);
 curl_setopt($ch, CURLOPT_POSTFIELDS,
-	http_build_query(["name" => $NAME, "email" => $EMAIL])
+	http_build_query(["name" => $NAME, "email" => $EMAIL, "password" => $PASSWORD])
 );
 
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
