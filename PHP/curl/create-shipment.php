@@ -1,6 +1,6 @@
 <?php
 
-$url = "https://sandbox.tristarexpress.com/v1/create-account";
+$url = "https://sandbox.tristarexpress.com/v1/shipments";
 
 $SHIPMENT = [
 	"order_id" => 1,
@@ -34,7 +34,7 @@ $SHIPMENT = [
 //	"to_country_a2" => "BR", // Required if not send country_id or a3
 //	"to_country_a3" => "BRL", // Required if not send country_id or a2
 	"to_postcode" => "",
-	"to_state_id" => ,
+	"to_state_id" => 1,
 //	"to_state_code" => "SP", // Required if not send state_id
 	"to_address_1" => "Av. Pres. Juscelino Kubitschek",
 	"to_address_2" => "SL 2 - Vila Olimpia",
@@ -72,11 +72,11 @@ $ch = curl_init();
 curl_setopt($ch, CURLOPT_URL, $url);
 curl_setopt($ch, CURLOPT_HTTPHEADER, [
 	'Accept: application/json',
-	'Content-Type: application/x-www-form-urlencoded;charset=UTF-8'
+	'Content-Type: application/json'
 ]);
 curl_setopt($ch, CURLOPT_POST, true);
 curl_setopt($ch, CURLOPT_POSTFIELDS,
-	http_build_query($SHIPMENT)
+	json_encode($SHIPMENT)
 );
 
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -110,9 +110,7 @@ var_dump($jsonResponse);
 /* EXPECT:
 
 object(stdClass)#1 (2) {
-	["id"]=> int(0)
-	["bearer_token"]=>
-	string(42) "0|fhdwUpwW56BEqDVFV9LQKARhVvSrJobQCNzWBpZb"
+	["tracking_code"]=> string(13)
 }
 
 */
