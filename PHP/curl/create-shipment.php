@@ -2,9 +2,9 @@
 
 $url = "https://sandbox.tristarexpress.com/v1/create-account";
 
-$NAME = "Your Name";
-$EMAIL = "your.email@tristarexpress.com";
-$PASSWORD = "password";
+$SHIPMENT = [
+
+];
 
 $ch = curl_init();
 curl_setopt($ch, CURLOPT_URL, $url);
@@ -14,7 +14,7 @@ curl_setopt($ch, CURLOPT_HTTPHEADER, [
 ]);
 curl_setopt($ch, CURLOPT_POST, true);
 curl_setopt($ch, CURLOPT_POSTFIELDS,
-	http_build_query(["name" => $NAME, "email" => $EMAIL, "password" => $PASSWORD])
+	http_build_query($SHIPMENT)
 );
 
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
