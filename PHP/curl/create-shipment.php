@@ -5,7 +5,7 @@ $url = "https://sandbox.tristarexpress.com/v1/shipments";
 $TOKEN = "2|8zuDuo94GQS81Lp9raj5RpHW572zviOw8Z7SlyFE";
 
 $SHIPMENT = [
-	"order_id" => 1,
+	"order_number" => 1,
 //	"from_title" => "Optional", // Used to save address for Backoffice
 	"from_person_type" => 1, // 1 Individual | 2 Legal
 //	"from_name" => "Jhon Doe", // Required for from_person_type 1
@@ -70,10 +70,13 @@ $SHIPMENT = [
 	]
 ];
 
+$debug .= print_r($tristarProductsArray, true);
+
 $ch = curl_init();
 curl_setopt($ch, CURLOPT_URL, $url);
 curl_setopt($ch, CURLOPT_HTTPHEADER, [
 	'Accept: application/json',
+//	'Accept-Language: pt-BR,pt;',
 	'Content-Type: application/json',
 	"Authorization: Bearer {$TOKEN}"
 ]);
