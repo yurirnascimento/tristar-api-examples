@@ -20,7 +20,8 @@ $SHIPMENT = [
 	"from_state_id" => 20,
 //	"from_state_code" => "FL, // Required if not send state_id
 	"from_address_1" => "2100 NW 42nd Ave",
-	"from_address_2" => "", // Complement
+	"from_address_2" => "", // Neighborhood...
+//	"from_address_complement" => "", // Complement
 	"from_address_number" => "", // Can be empty
 	"from_city" => "Miami",
 	"from_phone" => "(11) 9 9999-0000",
@@ -39,7 +40,8 @@ $SHIPMENT = [
 	"to_state_id" => 1,
 //	"to_state_code" => "SP", // Required if not send state_id
 	"to_address_1" => "Av. Pres. Juscelino Kubitschek",
-	"to_address_2" => "SL 2 - Vila Olimpia",
+	"to_address_2" => "SL 2 - Vila Olimpia", // Neighborhood...
+//	"to_address_complement" => "", // Complement
 	"to_address_number" => "2041",
 	"to_city" => "São Paulo",
 	"to_phone" => "(11) 9 9999-0000",
@@ -69,8 +71,6 @@ $SHIPMENT = [
 		]
 	]
 ];
-
-$debug .= print_r($tristarProductsArray, true);
 
 $ch = curl_init();
 curl_setopt($ch, CURLOPT_URL, $url);
@@ -120,3 +120,35 @@ object(stdClass)#1 (2) {
 }
 
 */
+
+/*
+ * JSON EXPECTED FOR VALIDATION EXCEPTIONS
+{
+    "message": "Os dados fornecidos eram inv\u00e1lidos.",
+    "errors": {
+        "from_postcode": [
+            "O campo from postcode \u00e9 obrigat\u00f3rio."
+        ]
+    }
+}
+ */
+
+if($jsonResponse->errors ?? false) {
+	$errors = array_map(function($fieldErrors){
+		return "<li>".implode(',', $fieldErrors)."</li>";
+	}, get_object_vars($jsonResponse->errors));
+
+	$html = [
+		"<h1>Erro de integração: {$jsonResponse->message}</h1>",
+		"<ul>",
+		implode('', $errors),
+		"</ul>"
+	];
+
+	echo implode('', $html);
+} else if($jsonResponse->message ?? false) {
+	// Trata apenas monstrando a mensagen de retorno "Os dados fornecidos eram inválidos."
+	echo "<h1>{$jsonResponse->message}</h1>";
+} else {
+	echo "<h1>API Tristar retornou um erro desconhecido (código: {$httpCode}).</h1>";
+}
